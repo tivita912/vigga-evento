@@ -204,16 +204,19 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
 
 #confetti{position:fixed;inset:0;z-index:60;pointer-events:none}
 
-/* ---- engrenagem (config) ---- */
-#engrenagem{
-  position:fixed;right:1.2rem;bottom:1.2rem;z-index:70;
-  width:3rem;height:3rem;border-radius:50%;border:1px solid rgba(244,238,224,.25);
-  background:rgba(14,32,31,.85);color:var(--creme-2);cursor:pointer;
+/* ---- controles flutuantes (voltar / engrenagem) ---- */
+#engrenagem,#voltar{
+  position:fixed;bottom:4.4rem;z-index:70;
+  border:1px solid rgba(244,238,224,.25);
+  background:rgba(14,32,31,.88);color:var(--creme-2);cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .4s;
+  opacity:0;pointer-events:none;transition:opacity .4s;
 }
-#engrenagem.visivel{opacity:1}
+#engrenagem.visivel,#voltar.visivel{opacity:1;pointer-events:auto}
+#engrenagem{right:1.2rem;width:3rem;height:3rem;border-radius:50%}
 #engrenagem svg{width:1.4rem;height:1.4rem}
+#voltar{left:1.2rem;gap:.55rem;padding:.7rem 1.2rem;border-radius:2rem;font-weight:700;font-size:.95rem;letter-spacing:.04em}
+#voltar:hover,#engrenagem:hover{border-color:var(--ouro);color:var(--creme)}
 
 /* ===================== CONFIGURAÇÃO ===================== */
 #setup{
@@ -221,7 +224,9 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
   display:flex;align-items:flex-start;justify-content:center;
   padding:4vh 1.4rem 6vh;
 }
-.setupCartao{width:100%;max-width:36rem}
+.setupCartao{width:100%;max-width:66rem}
+.setupColunas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2.6rem;align-items:start}
+@media (max-width:980px){.setupColunas{grid-template-columns:1fr}}
 .setupMarca{display:flex;align-items:center;gap:1.2rem;margin-bottom:2.2rem}
 .setupMarca .wordmark{font-size:2.2rem}
 .setupMarca .selo{font-size:.72rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--ouro);border:1px solid var(--ouro-3);padding:.4rem .8rem;border-radius:2rem}
@@ -262,16 +267,30 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
 .botaoPrincipal:active{transform:scale(.985)}
 .linkDemo{display:block;text-align:center;margin-top:1.3rem;color:var(--cinza);font-weight:600;font-size:.95rem;cursor:pointer;background:none;border:none;width:100%;text-decoration:underline;text-underline-offset:3px}
 .linkDemo:hover{color:var(--creme)}
-.ajuda{margin-top:2.2rem;border:1px solid rgba(244,238,224,.14);border-radius:.9rem;background:rgba(10,23,23,.45)}
-.ajuda summary{padding:1rem 1.2rem;cursor:pointer;font-weight:800;font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;color:var(--creme-2);list-style:none;display:flex;align-items:center;gap:.7rem}
-.ajuda summary::before{content:"✂\FE0E";color:var(--ouro)}
-.ajuda[open] summary{border-bottom:1px solid rgba(244,238,224,.12)}
-.ajuda .miolo{padding:1.1rem 1.3rem 1.3rem;font-size:.98rem;line-height:1.65;color:var(--creme-2)}
-.ajuda .miolo ol{margin:.4rem 0 .8rem;padding-left:1.3rem}
-.ajuda .miolo li{margin-bottom:.55rem}
-.ajuda .miolo b{color:var(--ouro)}
-.ajuda .miolo code{background:rgba(255,205,112,.12);color:var(--ouro);padding:.1em .4em;border-radius:.3em;font-family:inherit;font-weight:700}
-.ajuda .miolo p{margin:.4rem 0}
+.setupGuia{border:1px solid rgba(244,238,224,.14);border-radius:1rem;background:rgba(10,23,23,.45);padding:1.5rem 1.6rem}
+.setupGuia h3{margin:0 0 1.2rem;font-size:.95rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--creme-2);display:flex;gap:.7rem;align-items:center}
+.setupGuia h3::before{content:"✂\FE0E";color:var(--ouro)}
+.passos{list-style:none;margin:0;padding:0;counter-reset:passo}
+.passos li{counter-increment:passo;position:relative;padding-left:2.7rem;margin-bottom:1.4rem;font-size:.98rem;line-height:1.55;color:var(--creme-2)}
+.passos li::before{
+  content:counter(passo);position:absolute;left:0;top:0;
+  width:1.75rem;height:1.75rem;border-radius:50%;
+  background:var(--ouro);color:var(--tinta);
+  font-weight:900;font-size:.95rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.passos b{color:var(--creme)}
+.mockPlanilha{margin:.8rem 0 .7rem}
+.mockPlanilha table{border-collapse:collapse;width:100%;background:#FFFFFF;border-radius:.5rem;overflow:hidden;box-shadow:0 8px 24px -10px rgba(0,0,0,.65);font-size:.92rem}
+.mockPlanilha th,.mockPlanilha td{border:1px solid #E3E3E3;padding:.38rem .75rem;text-align:left}
+.mockPlanilha th{background:#F1F3F4;color:#5F6368;font-weight:700;width:2rem;text-align:center;font-size:.8rem}
+.mockPlanilha td{color:#202124;font-weight:600}
+.mockPlanilha tr.mCab td{color:#5F6368;font-weight:700}
+.botaoLeve{display:inline-block;padding:.55rem 1rem;border:1px solid var(--ouro-3);border-radius:.6rem;color:var(--ouro);font-weight:700;font-size:.9rem;text-decoration:none;transition:background .2s}
+.botaoLeve:hover{background:rgba(255,205,112,.1)}
+.caminho{display:inline-flex;flex-wrap:wrap;gap:.45rem;align-items:center;margin-top:.6rem;padding:.5rem .85rem;border-radius:.55rem;background:rgba(255,205,112,.08);border:1px solid rgba(255,205,112,.25);color:var(--creme);font-weight:700;font-size:.9rem}
+.caminho i{font-style:normal;color:var(--ouro)}
+.notaGuia{margin:.4rem 0 0;font-size:.9rem;color:var(--cinza);line-height:1.5}
 
 [hidden]{display:none !important}
 
@@ -297,6 +316,8 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
     <h2>Telão do ranking</h2>
     <p class="setupSub">Conecte a planilha de resultados e abra esta tela na TV. Cada linha nova da planilha aparece no ranking sozinha, sem recarregar nada.</p>
 
+    <div class="setupColunas">
+    <div class="setupForm">
     <div class="campo">
       <label for="inLink">Link da planilha do Google</label>
       <input type="url" id="inLink" placeholder="Cole aqui o link da planilha…" autocomplete="off" spellcheck="false">
@@ -329,19 +350,34 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
 
     <button class="botaoPrincipal" id="btAbrir">Abrir telão</button>
     <button class="linkDemo" id="btDemo">Ver demonstração com dados de exemplo</button>
+    </div>
 
-    <details class="ajuda">
-      <summary>Como preparar a planilha</summary>
-      <div class="miolo">
-        <ol>
-          <li>Crie uma planilha no Google Sheets com o <b>nome na coluna A</b> e o <b>tempo em segundos na coluna B</b> (ex.: <code>32,45</code>). Pode ter cabeçalho na primeira linha.</li>
-          <li>Clique em <b>Compartilhar</b> e mude o acesso para <b>“Qualquer pessoa com o link” · Leitor</b>.</li>
-          <li>Copie o link da barra do navegador e cole aqui em cima.</li>
-        </ol>
-        <p>Errou um resultado? É só corrigir ou apagar a linha na planilha — o telão se ajusta sozinho em poucos segundos.</p>
-        <p>Na TV, dê <b>dois cliques</b> na tela para entrar em tela cheia.</p>
-      </div>
-    </details>
+    <aside class="setupGuia">
+      <h3>Como preparar a planilha</h3>
+      <ol class="passos">
+        <li>
+          <b>Crie a planilha</b> no Google Sheets — nome na coluna <b>A</b>, tempo em segundos na coluna <b>B</b>. Fica assim:
+          <div class="mockPlanilha" aria-hidden="true">
+            <table>
+              <tr><th></th><th>A</th><th>B</th></tr>
+              <tr class="mCab"><th>1</th><td>Nome</td><td>Tempo</td></tr>
+              <tr><th>2</th><td>Carlão</td><td>32,45</td></tr>
+              <tr><th>3</th><td>Léo Degradê</td><td>28,9</td></tr>
+            </table>
+          </div>
+          <a class="botaoLeve" href="https://sheets.new" target="_blank" rel="noopener">+ Criar planilha nova</a>
+        </li>
+        <li>
+          <b>Compartilhe</b> para o telão conseguir ler:
+          <span class="caminho">Compartilhar <i>›</i> Qualquer pessoa com o link <i>›</i> Leitor</span>
+        </li>
+        <li>
+          <b>Cole o link</b> da barra do navegador no campo ao lado e clique em “Abrir telão”.
+        </li>
+      </ol>
+      <p class="notaGuia">Tudo que mudar na planilha durante o evento — linha nova, correção ou exclusão — aparece no telão sozinho em poucos segundos.</p>
+    </aside>
+    </div>
   </div>
 </section>
 
@@ -437,6 +473,8 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
 </div>
 
 <canvas id="confetti" aria-hidden="true"></canvas>
+
+<button id="voltar" title="Voltar à configuração">‹ Voltar à configuração</button>
 
 <button id="engrenagem" title="Configurações" aria-label="Configurações">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -935,6 +973,7 @@ function abreSetup(mensagemErro){
   $('#telao').hidden = true;
   $('#setup').hidden = false;
   $('#engrenagem').classList.remove('visivel');
+  $('#voltar').classList.remove('visivel');
   const cfg = CONFIG || leConfig();
   if(cfg.id) $('#inLink').value = 'https://docs.google.com/spreadsheets/d/'+cfg.id+(cfg.gid!=null?'/edit#gid='+cfg.gid:'');
   $('#inTitulo').value = cfg.titulo===PADRAO_TITULO ? '' : cfg.titulo;
@@ -972,6 +1011,7 @@ function iniciaTelao(){
   chip.hidden = CONFIG.criterio!=='alvo';
   if(!chip.hidden) chip.textContent = 'ALVO '+fmtTempo(CONFIG.alvo);
   render([]);
+  mostraControles(5000);
   if(CONFIG.demo){
     iniciaDemo(parseInt(CONFIG.demo,10)||0);
     if(new URLSearchParams(location.search).get('festa')){
@@ -996,19 +1036,29 @@ setInterval(()=>{
   $('#relogio').textContent = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 }, 1000);
 
-/* engrenagem aparece ao mexer o mouse */
-let timerEngrenagem = null;
-addEventListener('mousemove', ()=>{
+/* controles flutuantes (voltar + engrenagem) aparecem ao mexer o mouse
+   e nos primeiros segundos após abrir o telão */
+let timerControles = null;
+function mostraControles(duracao){
   if($('#telao').hidden) return;
   $('#engrenagem').classList.add('visivel');
-  clearTimeout(timerEngrenagem);
-  timerEngrenagem = setTimeout(()=>$('#engrenagem').classList.remove('visivel'), 3500);
-});
-$('#engrenagem').addEventListener('click', ()=>{ pararTelao(); abreSetup(); });
+  $('#voltar').classList.add('visivel');
+  clearTimeout(timerControles);
+  timerControles = setTimeout(()=>{
+    $('#engrenagem').classList.remove('visivel');
+    $('#voltar').classList.remove('visivel');
+  }, duracao||3500);
+}
+addEventListener('mousemove', ()=>mostraControles());
+function voltarConfig(){ pararTelao(); abreSetup(); }
+$('#engrenagem').addEventListener('click', voltarConfig);
+$('#voltar').addEventListener('click', voltarConfig);
 
-/* tecla C celebra o líder de novo (útil para o apresentador animar o público) */
+/* teclas: C celebra o líder de novo (útil para animar o público), Esc volta à configuração */
 addEventListener('keydown', e=>{
-  if((e.key==='c'||e.key==='C') && !$('#telao').hidden && ranking.length) celebrar(ranking[0]);
+  if($('#telao').hidden) return;
+  if((e.key==='c'||e.key==='C') && ranking.length) celebrar(ranking[0]);
+  if(e.key==='Escape' && !document.fullscreenElement) voltarConfig();
 });
 
 /* dois cliques = tela cheia (útil na TV) */

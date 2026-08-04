@@ -86,8 +86,9 @@ index.html?planilha=ID_DA_PLANILHA&criterio=alvo&alvo=5&titulo=Desafio da Barbea
 | `titulo`    | título exibido no topo                             |
 | `demo`      | modo demonstração (`demo=25` = 25 participantes)   |
 
-Para trocar a configuração depois: mexa o mouse e clique na engrenagem no canto
-inferior direito.
+Para trocar a configuração depois: mexa o mouse e clique em **"‹ Voltar à
+configuração"** (canto inferior esquerdo), na engrenagem (canto inferior direito),
+ou aperte **Esc**.
 
 ---
 
