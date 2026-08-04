@@ -16,7 +16,9 @@ No Google Sheets, crie uma planilha assim:
 | Nome do barbeiro    | 32,45                |
 
 - Pode ter cabeçalho na primeira linha (o telão ignora sozinho).
-- Tempo aceita vírgula ou ponto (`32,45` ou `32.45`), e também `1:32` (1min32s).
+- **Decimais sempre com vírgula: `32,45`.** Em planilha em português, digitar com
+  ponto (`32.45`) faz o Google interpretar a célula como data — o telão tem uma
+  proteção para isso, mas a vírgula é o caminho garantido. `1:32` (1min32s) também vale.
 
 ### 2. Compartilhe a planilha
 **Compartilhar → Acesso geral → "Qualquer pessoa com o link" → Leitor.**
