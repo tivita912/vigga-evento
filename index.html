@@ -81,7 +81,6 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
 .aoVivo i{width:.75rem;height:.75rem;border-radius:50%;background:var(--ouro);box-shadow:0 0 0 0 rgba(255,205,112,.55);animation:pulsa 1.6s ease-out infinite}
 @keyframes pulsa{70%{box-shadow:0 0 0 .85rem rgba(255,205,112,0)}100%{box-shadow:0 0 0 0 rgba(255,205,112,0)}}
 .relogio{font-size:1.35rem;font-weight:700;color:var(--cinza);font-feature-settings:"tnum"}
-.versao{font-size:.7rem;font-weight:700;color:var(--cinza);opacity:.55;letter-spacing:.08em}
 
 .palco{flex:1;min-height:0;position:relative}
 
@@ -317,7 +316,6 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
     <div class="setupMarca">
       <img class="logoImg" data-logo alt="Vigga">
       <span class="selo">Ranking ao vivo</span>
-      <span class="versao">v7</span>
     </div>
     <h2>Telão do ranking</h2>
     <p class="setupSub">Conecte a planilha de resultados e abra esta tela na TV. Cada linha nova da planilha aparece no ranking sozinha, sem recarregar nada.</p>
@@ -406,7 +404,6 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
       <span class="aviso" id="aviso" hidden>sem conexão · mostrando últimos dados</span>
       <span class="aoVivo"><i aria-hidden="true"></i>AO VIVO</span>
       <span class="relogio" id="relogio">--:--</span>
-      <span class="versao">v7</span>
     </div>
   </header>
 
@@ -504,8 +501,23 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
    dispensa servidor, CORS e funciona até aberto de um pendrive.
    ===================================================================== */
 
+const VERSAO = 8;
+console.info('Telão Vigga · versão '+VERSAO);
+
 const $ = s => document.querySelector(s);
 const fmt = n => n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+/* quando hospedado (Vercel/localhost), a página confere a cada minuto se
+   saiu versão nova e recarrega sozinha — a configuração fica salva */
+if(location.protocol==='http:' || location.protocol==='https:'){
+  setInterval(async ()=>{
+    try{
+      const r = await fetch(location.pathname+'?semcache='+Date.now(), {cache:'no-store'});
+      const m = (await r.text()).match(/const VERSAO = (\d+)/);
+      if(m && +m[1] !== VERSAO) location.reload();
+    }catch(e){}
+  }, 60000);
+}
 const fmtTempo = n => fmt(n)+'s';
 const PADRAO_TITULO = 'Desafio da Barbearia';
 const CHAVE_STORAGE = 'viggaRankingConfig';
@@ -641,11 +653,34 @@ function numeroCel(cel){
     const n = numeroTexto(v);
     if(n!=null) return n;
   }
-  // célula que o Google interpretou como data (ex.: "2.91" digitado com
-  // ponto em planilha pt-BR vira fev/1991): usa o texto formatado, do
-  // jeito que aparece na planilha
-  if(cel.f!=null) return numeroTexto(String(cel.f));
+  // célula que o Google interpretou como data (ex.: "2.80" digitado com
+  // ponto em planilha pt-BR vira fev/1980): tenta o texto formatado e,
+  // por fim, remonta o decimal a partir da própria data
+  if(cel.f!=null){
+    const n = numeroFormatado(String(cel.f));
+    if(n!=null) return n;
+  }
+  if(v instanceof Date && v.getDate()===1) return tempoDeData(v.getMonth()+1, v.getFullYear());
   return null;
+}
+
+function numeroFormatado(f){
+  f = f.trim();
+  const n = numeroTexto(f);
+  if(n!=null) return n;
+  // "2/1980" ou "1/2/1980" (dia 1 = pseudodata vinda de um decimal)
+  let m = f.match(/^(?:(\d{1,2})\/)?(\d{1,2})\/(\d{2,4})$/);
+  if(m && (m[1]==null || +m[1]===1)) return tempoDeData(+m[2], +m[3]);
+  // "fev./1980", "fev/80"
+  const meses = {jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12};
+  m = f.toLowerCase().match(/^([a-zç]{3})\.?\/(\d{2,4})$/);
+  if(m && meses[m[1]]) return tempoDeData(meses[m[1]], +m[2]);
+  return null;
+}
+
+function tempoDeData(mes, ano){
+  if(!(mes>=1 && mes<=12)) return null;
+  return arred(Number(mes + '.' + String(ano%100).padStart(2,'0')));
 }
 
 function numeroTexto(v){
