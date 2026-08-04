@@ -631,19 +631,29 @@ function textoCel(cel){
 
 function numeroCel(cel){
   if(!cel || cel.v==null) return null;
-  let v = cel.v;
+  const v = cel.v;
   if(typeof v === 'number') return arred(v);
   if(Array.isArray(v)) return arred(v[0]*3600 + v[1]*60 + v[2] + (v[3]||0)/1000); // célula formatada como hora
   if(typeof v === 'string'){
-    v = v.trim().toLowerCase().replace(/s$/,'').replace(/\s/g,'');
-    if(/^\d+:\d{1,2}([.,]\d+)?$/.test(v)){       // "1:32" = 1min32s
-      const [min,seg] = v.split(':');
-      return arred(+min*60 + Number(seg.replace(',','.')));
-    }
-    const n = Number(v.replace(',','.'));
-    return Number.isFinite(n) ? arred(n) : null;
+    const n = numeroTexto(v);
+    if(n!=null) return n;
   }
+  // célula que o Google interpretou como data (ex.: "2.91" digitado com
+  // ponto em planilha pt-BR vira fev/1991): usa o texto formatado, do
+  // jeito que aparece na planilha
+  if(cel.f!=null) return numeroTexto(String(cel.f));
   return null;
+}
+
+function numeroTexto(v){
+  v = v.trim().toLowerCase().replace(/s$/,'').replace(/\s/g,'');
+  if(/^\d+:\d{1,2}([.,]\d+)?$/.test(v)){       // "1:32" = 1min32s
+    const [min,seg] = v.split(':');
+    return arred(+min*60 + Number(seg.replace(',','.')));
+  }
+  if(!/^[\d.,]+$/.test(v)) return null;
+  const n = Number(v.replace(',','.'));
+  return Number.isFinite(n) ? arred(n) : null;
 }
 
 function arred(n){
