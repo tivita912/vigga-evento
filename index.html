@@ -56,7 +56,7 @@ button,input,select{font-family:inherit}
 .wordmark .gg{position:relative}
 .wordmark .gg::after{
   content:"";position:absolute;left:.03em;right:.16em;
-  top:calc(50% - .048em);height:.096em;background:currentColor;
+  top:calc(50% - .048em);height:.096em;background:var(--ouro-2);
 }
 
 /* ===== Barber pole (assinatura visual) ===== */
@@ -559,8 +559,8 @@ window.__viggaDados = function(resp){
     return;
   }
   $('#aviso').hidden = true;
-  aplica(linhasDaTabela(resp.table||{}));
   jaCarregou = true;
+  aplica(linhasDaTabela(resp.table||{}));
 };
 
 function busca(){
@@ -586,14 +586,33 @@ function falha(){
   }
 }
 
+let linhasBrutas = 0;   // linhas com qualquer conteúdo na última leitura
+
 function linhasDaTabela(t){
   const out = [];
   const vistos = {};
+  linhasBrutas = 0;
   (t.rows||[]).forEach((r,idx)=>{
     const c = r.c||[];
-    const nome = textoCel(c[0]);
-    const tempo = numeroCel(c[1]);
-    if(!nome || tempo==null) return;   // pula cabeçalho e linhas incompletas
+    if(c.some(cel=>cel && cel.v!=null && String(cel.v).trim()!=='')) linhasBrutas++;
+    // layout canônico: nome na A, tempo na B — mas tolera variações:
+    // coluna de numeração antes, colunas trocadas, colunas deslocadas.
+    let tempo = numeroCel(c[1]), tempoIdx = 1;
+    if(tempo==null){
+      tempoIdx = -1;
+      for(let i=Math.min(c.length,6)-1;i>=0;i--){
+        const v = numeroCel(c[i]);
+        if(v!=null){ tempo=v; tempoIdx=i; break; }
+      }
+    }
+    if(tempo==null) return;
+    let nome = '';
+    for(let i=0;i<Math.min(c.length,6);i++){
+      if(i===tempoIdx) continue;
+      const s = textoCel(c[i]);
+      if(s && numeroCel(c[i])==null){ nome=s; break; }
+    }
+    if(!nome) return;   // pula cabeçalho e linhas incompletas
     const base = nome.toLowerCase()+'|'+tempo;
     vistos[base] = (vistos[base]||0)+1;
     out.push({nome, tempo, ordem:idx, chave:base+'|'+vistos[base]});
@@ -670,6 +689,13 @@ function render(novas){
     for(const [,el] of elLinhas) el.remove();
     elLinhas.clear();
     liderChave = null;
+    const soInvalido = !MODO_DEMO && jaCarregou && linhasBrutas>0;
+    $('.vazioTitulo').textContent = soInvalido
+      ? 'Planilha conectada — mas sem tempos válidos'
+      : 'Aguardando o primeiro tempo…';
+    $('.vazioSub').textContent = soInvalido
+      ? 'Confira o formato: nome numa coluna, tempo em segundos na outra (ex.: 32,45).'
+      : 'Assim que a planilha receber um resultado, ele aparece aqui sozinho.';
   }
   renderTicker();
 }
