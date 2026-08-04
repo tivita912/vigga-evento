@@ -17,8 +17,12 @@ No Google Sheets, crie uma planilha assim:
 
 - Pode ter cabeçalho na primeira linha (o telão ignora sozinho).
 - **Decimais sempre com vírgula: `32,45`.** Em planilha em português, digitar com
-  ponto (`32.45`) faz o Google interpretar a célula como data — o telão tem uma
-  proteção para isso, mas a vírgula é o caminho garantido. `1:32` (1min32s) também vale.
+  ponto (`32.45`) faz o Google interpretar a célula como data ou como milhar — o
+  telão tem proteção para o caso da data, mas a vírgula é o caminho garantido.
+  `1:32` (1min32s) também vale.
+- **Blindagem total (recomendado):** antes do evento, selecione a coluna B inteira →
+  **Formatar → Número → Texto simples**. Assim o Google não interpreta nada e
+  qualquer jeito de digitar (`3,91`, `3.91`, `1:32`) chega certo no telão.
 
 ### 2. Compartilhe a planilha
 **Compartilhar → Acesso geral → "Qualquer pessoa com o link" → Leitor.**
