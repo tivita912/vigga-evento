@@ -630,7 +630,7 @@ function textoCel(cel){
 }
 
 function numeroCel(cel){
-  if(!cel || cel.v==null) return null;
+  if(!cel) return null;
   const v = cel.v;
   if(typeof v === 'number') return arred(v);
   if(Array.isArray(v)) return arred(v[0]*3600 + v[1]*60 + v[2] + (v[3]||0)/1000); // célula formatada como hora
