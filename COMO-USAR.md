@@ -1,6 +1,6 @@
 # Telão do Ranking · Vigga — evento 12/08/2026
 
-Um único arquivo faz tudo: **`telao.html`**. Ele lê uma planilha do Google e mostra o
+Um único arquivo faz tudo: **`index.html`**. Ele lê uma planilha do Google e mostra o
 ranking na TV, atualizando sozinho a cada ~4 segundos — sem servidor, sem instalação,
 sem recarregar página. Funciona até aberto de um pendrive.
 
@@ -23,7 +23,7 @@ No Google Sheets, crie uma planilha assim:
 Sem isso o telão não consegue ler os dados.
 
 ### 3. Conecte o telão
-1. Abra o `telao.html` com dois cliques (Chrome de preferência).
+1. Abra o `index.html` com dois cliques (Chrome de preferência).
 2. Cole o link da planilha (o mesmo da barra do navegador).
 3. Escolha o critério do ranking:
    - **Menor tempo** — tempo mais baixo fica em 1º; ou
@@ -74,7 +74,7 @@ com participantes fictícios chegando aos poucos, incluindo a celebração de no
 Dá para montar um link que já abre configurado (útil para deixar tudo pronto num atalho):
 
 ```
-telao.html?planilha=ID_DA_PLANILHA&criterio=alvo&alvo=5&titulo=Desafio da Barbearia
+index.html?planilha=ID_DA_PLANILHA&criterio=alvo&alvo=5&titulo=Desafio da Barbearia
 ```
 
 | Parâmetro   | O que faz                                          |
