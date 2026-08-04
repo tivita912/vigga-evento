@@ -291,6 +291,7 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
 .caminho{display:inline-flex;flex-wrap:wrap;gap:.45rem;align-items:center;margin-top:.6rem;padding:.5rem .85rem;border-radius:.55rem;background:rgba(255,205,112,.08);border:1px solid rgba(255,205,112,.25);color:var(--creme);font-weight:700;font-size:.9rem}
 .caminho i{font-style:normal;color:var(--ouro)}
 .notaGuia{margin:.4rem 0 0;font-size:.9rem;color:var(--cinza);line-height:1.5}
+.dicaCola{margin:.7rem 0 0;padding:.6rem .85rem;border-radius:.55rem;background:rgba(255,205,112,.1);border:1px solid rgba(255,205,112,.3);font-size:.9rem;font-weight:700;color:var(--ouro);line-height:1.5}
 
 [hidden]{display:none !important}
 
@@ -365,7 +366,8 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
               <tr><th>3</th><td>Léo Degradê</td><td>28,9</td></tr>
             </table>
           </div>
-          <a class="botaoLeve" href="https://sheets.new" target="_blank" rel="noopener">+ Criar planilha nova</a>
+          <a class="botaoLeve" id="btCriar" href="https://sheets.new" target="_blank" rel="noopener">+ Criar planilha nova</a>
+          <p class="dicaCola" id="dicaCola" hidden></p>
         </li>
         <li>
           <b>Compartilhe</b> para o telão conseguir ler:
@@ -1070,6 +1072,27 @@ $('#telao').addEventListener('dblclick', ()=>{
 /* ---------------- formulário de configuração ---------------- */
 
 document.querySelectorAll('input[name=criterio]').forEach(r=>r.addEventListener('change', atualizaCampoAlvo));
+
+/* ao criar planilha nova, já deixa o cabeçalho copiado para colar em A1 */
+$('#btCriar').addEventListener('click', ()=>{
+  const dica = $('#dicaCola');
+  const ok = ()=>{ dica.textContent = '✓ Cabeçalho copiado! Na planilha que abriu, clique na célula A1 e cole (Ctrl+V ou ⌘V) — os resultados entram nas linhas de baixo.'; dica.hidden = false; };
+  const falhou = ()=>{ dica.textContent = 'Na planilha que abriu, escreva “Nome” em A1 e “Tempo” em B1 — os resultados entram nas linhas de baixo.'; dica.hidden = false; };
+  const fallback = ()=>{
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = 'Nome\tTempo';
+      document.body.appendChild(ta);
+      ta.select();
+      const feito = document.execCommand('copy');
+      ta.remove();
+      feito ? ok() : falhou();
+    }catch(e){ falhou(); }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText('Nome\tTempo').then(ok, fallback);
+  }else fallback();
+});
 
 $('#btAbrir').addEventListener('click', ()=>{
   const erro = $('#erroLink');
