@@ -11,9 +11,16 @@ sem recarregar página. Funciona até aberto de um pendrive.
 ### 1. Crie a planilha de resultados
 No Google Sheets, crie uma planilha assim:
 
-| A (nome)            | B (tempo em segundos) |
-|---------------------|----------------------|
-| Nome do barbeiro    | 32,45                |
+| A (nome)            | B (tempo em segundos) | C (tipo do ranking) |
+|---------------------|----------------------|---------------------|
+| Nome do participante| 32,45                | VIGGA ou GRATEFUL   |
+
+O telão mostra **dois rankings lado a lado**: **VIGGA** (clientes, dourado) e
+**GRATEFUL** (não clientes, roxo/laranja — paleta do Barber Day Conference).
+Linha sem tipo preenchido entra no GRATEFUL. Se mudar o tipo de alguém na
+planilha (ex.: virou cliente), a pessoa muda de ranking na hora, com festa.
+Colunas extras (Instagram, celular) podem existir: o @ do Instagram aparece
+junto ao líder de cada ranking; **celular nunca é exibido**.
 
 - Pode ter cabeçalho na primeira linha (o telão ignora sozinho).
 - **Decimais sempre com vírgula: `32,45`.** Em planilha em português, digitar com
@@ -46,8 +53,9 @@ A configuração fica salva no navegador — na próxima vez já abre direto no 
 - A equipe **só preenche a planilha** (do celular ou notebook): nome na coluna A,
   tempo na coluna B. Em poucos segundos o resultado entra no telão com animação.
 - **Errou?** Corrija ou apague a linha na planilha — o telão se ajusta sozinho.
-- **Novo líder** dispara celebração com confete automaticamente.
-- Tecla **C** repete a celebração do líder atual (bom para o apresentador animar o público).
+- **Toda entrada nova** ganha confete e uma faixa com o nome; **novo líder** de
+  qualquer um dos rankings ganha a celebração grande de tela cheia.
+- Teclas **C** e **G** repetem a celebração do líder VIGGA e GRATEFUL (bom para o apresentador animar o público).
 - **Dois cliques na tela** = tela cheia.
 - O ranking mostra pódio (top 3) fixo + lista do 4º em diante. Com muitos participantes,
   a lista gira de página sozinha a cada 9s — ninguém fica de fora.
