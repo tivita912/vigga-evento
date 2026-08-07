@@ -398,7 +398,7 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
       <ol class="passos">
         <li>
           <span class="passoNum">1</span>
-          <p><b>Crie a planilha</b> no Google Sheets: nome na coluna <b>A</b>, tempo em segundos na coluna <b>B</b> e o ranking na coluna <b>C</b> — <b>VIGGA</b> para clientes, <b>GRATEFUL</b> (ou vazio) para os demais:</p>
+          <p><b>Crie a planilha</b> no Google Sheets: nome na coluna <b>A</b>, tempo em segundos na coluna <b>B</b> e o ranking na coluna <b>C</b> — <b>VIGGA</b> para clientes, <b>GRATEFUL</b> para os demais. A linha só entra no telão com os três preenchidos:</p>
           <div class="mockPlanilha" aria-hidden="true">
             <table>
               <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
@@ -566,7 +566,7 @@ h1.titulo{margin:0;font-size:1.65rem;font-weight:800;letter-spacing:.03em;text-t
    dispensa servidor, CORS e funciona até aberto de um pendrive.
    ===================================================================== */
 
-const VERSAO = 13;
+const VERSAO = 14;
 console.info('Telão Vigga · versão '+VERSAO);
 
 const $ = s => document.querySelector(s);
@@ -728,7 +728,10 @@ function linhasDaTabela(t){
       }
     }
     if(!nome || tempo==null) return;   // pula cabeçalho e linhas incompletas
-    tipo = /vigga/i.test(tipo) ? 'VIGGA' : 'GRATEFUL';   // sem marcação = GRATEFUL
+    // só entra no telão com as 3 informações: nome, tempo E tipo do ranking —
+    // evita cair no ranking errado enquanto a equipe ainda preenche a linha
+    if(!RE_TIPO.test((tipo||'').trim())) return;
+    tipo = /vigga/i.test(tipo) ? 'VIGGA' : 'GRATEFUL';
     insta = insta ? '@'+insta.trim().replace(/^@+/,'') : '';
     const base = nome.toLowerCase()+'|'+tempo;
     vistos[base] = (vistos[base]||0)+1;
@@ -863,7 +866,7 @@ function render(){
       ? 'Planilha conectada — mas sem tempos válidos'
       : 'Aguardando o primeiro tempo…';
     $('.vazioSub').textContent = soInvalido
-      ? 'Confira o formato: nome numa coluna, tempo em segundos na outra (ex.: 32,45).'
+      ? 'Cada linha precisa de nome, tempo em segundos (ex.: 32,45) e o tipo do ranking (VIGGA ou GRATEFUL).'
       : 'Assim que a planilha receber um resultado, ele aparece aqui sozinho.';
   }
   renderTicker();

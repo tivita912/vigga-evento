@@ -17,8 +17,10 @@ No Google Sheets, crie uma planilha assim:
 
 O telão mostra **dois rankings lado a lado**: **VIGGA** (clientes, dourado) e
 **GRATEFUL** (não clientes, roxo/laranja — paleta do Barber Day Conference).
-Linha sem tipo preenchido entra no GRATEFUL. Se mudar o tipo de alguém na
-planilha (ex.: virou cliente), a pessoa muda de ranking na hora, com festa.
+**A linha só entra no telão quando nome, tempo e tipo estiverem preenchidos** —
+sem risco de alguém cair no ranking errado enquanto a linha está pela metade.
+Se mudar o tipo de alguém depois (ex.: virou cliente), a pessoa muda de
+ranking na hora, com festa.
 Colunas extras (Instagram, celular) podem existir: o @ do Instagram aparece
 junto ao líder de cada ranking; **celular nunca é exibido**.
 
